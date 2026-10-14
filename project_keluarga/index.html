@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keluarga Bahagia</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navPink: '#f9849f',
+                        iconPink: '#fb6b87',
+                        bgSoftPink: '#e5d5d8',
+                        textDark: '#2c2c2c',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            /* Warna background dasar yang lembut */
+            background-color: #ecdfe2;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Elemen dekoratif background (bentuk abstrak) */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: -1;
+            opacity: 0.6;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #fce7eb; }
+        .blob-2 { bottom: -20%; right: -10%; width: 60vw; height: 60vw; background: #f6d2da; }
+        .blob-3 { top: 40%; left: 30%; width: 40vw; height: 40vw; background: #e8c6ce; }
+
+        /* Grid pattern tipis */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image: 
+                linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: rotate(45deg) scale(2);
+        }
+
+        /* Transisi halaman */
+        .page-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .page-section.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Hover efek untuk card */
+        .interactive-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .interactive-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Player musik */
+        #music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+        #music-btn:active { transform: scale(0.9); }
+    </style>
+</head>
+<body class="font-sans text-textDark antialiased min-h-screen flex flex-col">
+
+    <!-- Background Dekorasi -->
+    <div class="bg-grid"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <!-- Navigation Bar -->
+    <!-- Navbar dibuat melayang (fixed) dengan bentuk kapsul -->
+    <nav class="fixed top-4 w-full z-50 px-4">
+        <div class="max-w-6xl mx-auto bg-navPink rounded-full px-6 py-3 md:py-4 flex justify-between items-center shadow-lg">
+            <div class="text-white font-semibold tracking-wider text-sm md:text-base flex items-center gap-2 cursor-pointer" onclick="navigateTo('home')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                BEST FAMILY
+            </div>
+            <div class="flex gap-4 md:gap-8 text-white text-xs md:text-sm font-medium">
+                <button onclick="navigateTo('home')" class="hover:text-pink-200 transition">HOME</button>
+                <button onclick="navigateTo('about')" class="hover:text-pink-200 transition">ABOUT</button>
+                <button onclick="navigateTo('more')" class="hover:text-pink-200 transition">MORE</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto w-full flex items-center justify-center min-h-[90vh]">
+        
+        <!-- ==================== HOME SECTION ==================== -->
+        <section id="home" class="page-section active w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Kolom Kiri: Teks & Menu Interaktif -->
+                <div class="space-y-12">
+                    <div>
+                        <!-- GANTI TEKS JUDUL UTAMA DI SINI -->
+                        <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl font-medium leading-tight mb-4">
+                            Keluarga Bahagia<br>Hermadi & Rudiana
+                        </h1>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Menu Bunga (Rumah Kita) -->
+                        <div class="interactive-card cursor-pointer p-4 rounded-xl" onclick="navigateTo('rumah-kita')">
+                            <div class="w-16 h-16 rounded-full bg-iconPink flex items-center justify-center text-white text-3xl shadow-md mb-4">
+                                🌸
+                            </div>
+                            <h3 class="font-bold text-xl mb-2">Rumah Kita</h3>
+                            <p class="text-sm text-gray-700 leading-relaxed">
+                                <!-- GANTI TEKS DESKRIPSI SINGKAT DI SINI -->
+                                Tempat terbaik di dunia adalah di tengah keluarga. Ini adalah arsip sederhana dari perjalanan, cinta, dan tawa kami bersama.
+                            </p>
+                        </div>
+
+                        <!-- Menu Air (Endless Love) -->
+                        <div class="interactive-card cursor-pointer p-4 rounded-xl" onclick="navigateTo('endless-love')">
+                            <div class="w-16 h-16 rounded-full bg-iconPink flex items-center justify-center text-white text-3xl shadow-md mb-4">
+                                💦
+                            </div>
+                            <h3 class="font-bold text-xl mb-2">Endless Love</h3>
+                            <p class="text-sm text-gray-700 leading-relaxed">
+                                <!-- GANTI TEKS DESKRIPSI SINGKAT DI SINI -->
+                                Rumah bukan cuma tentang bangunan fisik, tapi tentang orang-orang di dalamnya.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan: 2 Foto Utama -->
+                <div class="flex flex-col gap-6">
+                    <!-- FOTO UTAMA 1 -->
+                    <!-- GANTI LINK src DENGAN LINK FOTO ANDA -->
+                    <img src="foto_sampul2.jpg" alt="Foto Keluarga 1" class="w-full h-64 md:h-80 object-cover rounded-3xl shadow-xl hover:scale-[1.02] transition duration-500">
+                    
+                    <!-- FOTO UTAMA 2 -->
+                    <!-- GANTI LINK src DENGAN LINK FOTO ANDA -->
+                    <img src="foto_sampul1.jpg" alt="Foto Keluarga 2" class="w-full h-64 md:h-80 object-cover rounded-3xl shadow-xl hover:scale-[1.02] transition duration-500">
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ABOUT SECTION ==================== -->
+        <section id="about" class="page-section w-full bg-white/40 backdrop-blur-md rounded-3xl p-6 md:p-12 shadow-sm border border-white/50">
+            <button onclick="navigateTo('home')" class="mb-6 flex items-center text-iconPink font-semibold hover:text-navPink transition">
+                &larr; Kembali ke Home
+            </button>
+            <h2 class="font-serif text-4xl md:text-5xl mb-8 border-b-2 border-iconPink pb-4 inline-block">Tentang Kami</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div class="space-y-6 text-gray-800 text-lg leading-relaxed">
+                    <!-- GANTI KATA-KATA ABOUT DI SINI -->
+                    <p>Tempat di mana cinta, tawa, dan kebersamaan menjadi satu. Website ini adalah arsip perjalanan hidup keluarga kami—merayakan setiap momen bahagia dan saling menguatkan di setiap langkah. Karena pada akhirnya, harta paling berharga yang kita punya adalah waktu dan kebersamaan dengan orang tersayang.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- FOTO ABOUT 1 & 2 -->
+                    <img src="foto_about2.jpg" alt="About 1" class="w-full h-64 object-cover rounded-2xl shadow-md">
+                    <img src="foto_about2.jpg" alt="About 2" class="w-full h-64 object-cover rounded-2xl shadow-md">
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== MORE SECTION ==================== -->
+        <section id="more" class="page-section w-full bg-white/40 backdrop-blur-md rounded-3xl p-6 md:p-12 shadow-sm border border-white/50">
+            <button onclick="navigateTo('home')" class="mb-6 flex items-center text-iconPink font-semibold hover:text-navPink transition">
+                &larr; Kembali ke Home
+            </button>
+            <h2 class="font-serif text-4xl md:text-5xl mb-8 border-b-2 border-iconPink pb-4 inline-block">Lebih Banyak Kenangan</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div class="space-y-6 text-gray-800 text-lg leading-relaxed order-2 lg:order-1">
+                     <!-- GANTI KATA-KATA MORE DI SINI -->
+                    <p>Di tengah dunia yang bergerak begitu cepat dan penuh kesibukan, keluarga adalah satu-satunya tempat di mana kita bisa benar-benar melambat dan menjadi diri sendiri. Halaman ini adalah perwujudan dari rasa syukur kami atas ikatan yang menyatukan kami selama ini.
+
+Di sinilah tawa dirayakan bersama, air mata atau lelah diringankan dengan pelukan, dan setiap pencapaian kecil dihargai. Kami percaya bahwa rumah sejati bukanlah tentang seberapa megah tempat tinggalnya, melainkan tentang siapa yang ada di dalamnya dan seberapa besar cinta yang dibagikan.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 order-1 lg:order-2">
+                    <!-- FOTO MORE 1 & 2 -->
+                    <img src="foto_more2.jpg" alt="More 1" class="w-full h-64 object-cover rounded-2xl shadow-md">
+                    <img src="foto_more1.jpg" alt="More 2" class="w-full h-64 object-cover rounded-2xl shadow-md">
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== DETAIL: RUMAH KITA (Bunga) ==================== -->
+        <section id="rumah-kita" class="page-section w-full bg-white/40 backdrop-blur-md rounded-3xl p-6 md:p-12 shadow-sm border border-white/50">
+            <button onclick="navigateTo('home')" class="mb-6 flex items-center text-iconPink font-semibold hover:text-navPink transition">
+                &larr; Kembali ke Home
+            </button>
+            
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-full bg-iconPink flex items-center justify-center text-white text-2xl shadow-md">🌸</div>
+                <h2 class="font-serif text-4xl md:text-5xl">Rumah Kita</h2>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/2 space-y-4 text-gray-800 text-lg leading-relaxed">
+                     <!-- GANTI KATA-KATA RUMAH KITA DI SINI -->
+                    <p>Arti sebuah rumah bagi keluarga kita. Bukan seberapa besar bangunannya, tapi seberapa hangat suasana di dalamnya.</p>
+                    <p>Tempat kita pulang, tempat kita saling menguatkan, dan tempat segala cerita berawal.</p>
+                </div>
+                <div class="md:w-1/2 flex flex-col sm:flex-row gap-4">
+                    <!-- FOTO RUMAH KITA 1 & 2 -->
+                    <img src="foto_rumahkita1.jpg" alt="Bunga 1" class="w-full sm:w-1/2 h-64 object-cover rounded-2xl shadow-md">
+                    <img src="foto_rumahkita2.jpg" alt="Bunga 2" class="w-full sm:w-1/2 h-64 object-cover rounded-2xl shadow-md">
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== DETAIL: ENDLESS LOVE (Air) ==================== -->
+        <section id="endless-love" class="page-section w-full bg-white/40 backdrop-blur-md rounded-3xl p-6 md:p-12 shadow-sm border border-white/50">
+            <button onclick="navigateTo('home')" class="mb-6 flex items-center text-iconPink font-semibold hover:text-navPink transition">
+                &larr; Kembali ke Home
+            </button>
+            
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-full bg-iconPink flex items-center justify-center text-white text-2xl shadow-md">💦</div>
+                <h2 class="font-serif text-4xl md:text-5xl">Endless Love</h2>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/2 space-y-4 text-gray-800 text-lg leading-relaxed">
+                    <!-- GANTI KATA-KATA ENDLESS LOVE DI SINI -->
+                    <p>Cinta tanpa batas. Layaknya air yang terus mengalir, begitu pula kasih sayang dalam keluarga ini.</p>
+                    <p>Menghadapi suka dan duka bersama, saling mendukung di setiap langkah perjalanan kehidupan.</p>
+                </div>
+                <div class="md:w-1/2 flex flex-col sm:flex-row gap-4">
+                    <!-- FOTO ENDLESS LOVE 1 & 2 -->
+                    <img src="foto_endlesslove1.jpg" alt="Air 1" class="w-full sm:w-1/2 h-64 object-cover rounded-2xl shadow-md">
+                    <img src="foto_endlesslove2.jpg" alt="Air 2" class="w-full sm:w-1/2 h-64 object-cover rounded-2xl shadow-md">
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Background Music & Player -->
+    <!-- GANTI LINK src PADA AUDIO DENGAN LINK LAGU MP3 ANDA -->
+    <!-- Anda bisa upload lagu ke layanan hosting file atau gunakan URL musik bebas hak cipta -->
+    <audio id="bg-music" loop>
+        <source src="harta_berharga.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <!-- Tombol untuk menyalakan/mematikan musik -->
+    <button id="music-btn" class="bg-iconPink text-white p-4 rounded-full flex items-center justify-center cursor-pointer hover:bg-navPink focus:outline-none" onclick="toggleMusic()" title="Mainkan/Hentikan Musik">
+        <!-- Ikon Play awal (SVG) -->
+        <svg id="icon-play" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+        </svg>
+        <!-- Ikon Pause disembunyikan awal (SVG) -->
+        <svg id="icon-pause" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+    </button>
+
+    <script>
+        // Logika Navigasi (Single Page Application simpel)
+        function navigateTo(sectionId) {
+            // Ambil semua section halaman
+            const sections = document.querySelectorAll('.page-section');
+            
+            // Sembunyikan semuanya
+            sections.forEach(sec => {
+                sec.classList.remove('active');
+                // Beri sedikit delay sebelum display:none agar transisi opacity terlihat
+                setTimeout(() => {
+                    if(!sec.classList.contains('active')) {
+                        sec.style.display = 'none';
+                    }
+                }, 300); // 300ms sesuaikan dengan durasi transisi di CSS
+            });
+
+            // Tampilkan section yang dituju
+            const target = document.getElementById(sectionId);
+            target.style.display = 'block';
+            
+            // Paksa reflow browser agar animasi css berjalan
+            void target.offsetWidth; 
+            
+            target.classList.add('active');
+            
+            // Scroll otomatis ke atas dengan halus
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Pastikan saat pertama dimuat, hanya home yang tampil
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(sec => {
+                if (sec.id !== 'home') {
+                    sec.style.display = 'none';
+                }
+            });
+        });
+
+        // Logika Pemutar Musik Latar
+        const music = document.getElementById('bg-music');
+        const iconPlay = document.getElementById('icon-play');
+        const iconPause = document.getElementById('icon-pause');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                iconPlay.classList.remove('hidden');
+                iconPause.classList.add('hidden');
+            } else {
+                // Memulai musik. Memerlukan penanganan error karena browser 
+                // kadang memblokir autoplay jika tidak ada interaksi pengguna
+                let playPromise = music.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        // Playback dimulai
+                        iconPlay.classList.add('hidden');
+                        iconPause.classList.remove('hidden');
+                    })
+                    .catch(error => {
+                        console.log("Browser memblokir pemutaran musik otomatis. Pengguna harus menekan tombol play.");
+                    });
+                }
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Opsional: Coba putar musik otomatis pada klik pertama di manapun di halaman
+        // karena browser modern tidak mengizinkan autoplay tanpa interaksi
+        document.body.addEventListener('click', function firstPlay() {
+            if(!isPlaying) {
+                toggleMusic();
+            }
+            // Hapus event listener agar tidak dipanggil berkali-kali
+            document.body.removeEventListener('click', firstPlay);
+        }, { once: true });
+
+    </script>
+</body>
+</html>
